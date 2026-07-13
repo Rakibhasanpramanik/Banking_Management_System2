@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Accounts{% endblock %}
+{% block page_title %}Bank Accounts{% endblock %}
+{% block content %}
+<div class="page-actions">
+    <a href="{{ url_for('add_account') }}" class="btn btn-primary">
+        <i class="fas fa-plus-circle"></i> Open New Account
+    </a>
+</div>
+<div class="card">
+    <div class="card-header">
+        <h2><i class="fas fa-credit-card"></i> All Accounts</h2>
+        <span class="badge">{{ accounts|length }} total</span>
+    </div>
+    <div class="card-body">
+        <div class="table-wrapper">
+        <table class="data-table">
+            <thead>
+                <tr><th>#</th><th>Account No.</th><th>Customer</th><th>Type</th><th>Balance</th><th>Extra Info</th><th>Status</th></tr>
+            </thead>
+            <tbody>
+                {% for a in accounts %}
+                <tr>
+                    <td>{{ a.account_id }}</td>
+                    <td><code>{{ a.account_number }}</code></td>
+                    <td>{{ a.customer_name }}</td>
+                    <td><span class="type-badge {{ a.account_type }}">{{ a.account_type|capitalize }}</span></td>
+                    <td class="amount">৳ {{ "{:,.2f}".format(a.balance) }}</td>
+                    <td>
+                        {% if a.interest_rate %}Rate: {{ a.interest_rate }}%
+                        {% elif a.overdraft_limit %}OD: ৳{{ "{:,.0f}".format(a.overdraft_limit) }}
+                        {% else %}-{% endif %}
+                    </td>
+                    <td><span class="status-{{ a.status }}">{{ a.status }}</span></td>
+                </tr>
+                {% else %}
+                <tr><td colspan="7" class="empty-row">No accounts found.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

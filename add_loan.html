@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Loan Payments{% endblock %}
+{% block page_title %}Loan Payment{% endblock %}
+{% block content %}
+<div class="page-actions"><a href="{{ url_for('loans') }}" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Back</a></div>
+
+{% if loan %}
+<div class="loan-summary card mb-4">
+    <div class="card-body loan-info-grid">
+        <div><small>Customer</small><strong>{{ loan.customer_name }}</strong></div>
+        <div><small>Loan Type</small><strong>{{ loan.loan_type }}</strong></div>
+        <div><small>Total Amount</small><strong class="amount">৳ {{ "{:,.0f}".format(loan.loan_amount) }}</strong></div>
+        <div><small>Interest Rate</small><strong>{{ loan.interest_rate }}%</strong></div>
+        <div><small>Status</small><span class="status-{{ loan.status }}">{{ loan.status }}</span></div>
+    </div>
+</div>
+
+<div class="two-col-grid">
+    <div class="card form-card">
+        <div class="card-header"><h2><i class="fas fa-money-bill-wave"></i> Record Payment</h2></div>
+        <div class="card-body">
+            <form method="POST">
+                <div class="form-group">
+                    <label>Payment Amount (৳)</label>
+                    <input type="number" name="payment_amount" step="0.01" required placeholder="0.00">
+                </div>
+                <div class="form-group">
+                    <label>Payment Method</label>
+                    <select name="payment_method">
+                        <option>Bank Transfer</option>
+                        <option>Cash</option>
+                        <option>Cheque</option>
+                        <option>Mobile Banking</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full"><i class="fas fa-check"></i> Record Payment</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header"><h2><i class="fas fa-history"></i> Payment History ({{ payments|length }})</h2></div>
+        <div class="card-body">
+            {% for p in payments %}
+            <div class="payment-row">
+                <div><strong>৳ {{ "{:,.2f}".format(p.payment_amount) }}</strong></div>
+                <div>{{ p.payment_method }}</div>
+                <div>{{ p.payment_date.strftime('%d %b %Y') if p.payment_date else 'N/A' }}</div>
+                <span class="status-{{ p.status }}">{{ p.status }}</span>
+            </div>
+            {% else %}
+            <p class="empty-row">No payments recorded yet.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

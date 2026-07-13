@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+{% block title %}Dashboard - Banking System{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+
+{% block content %}
+<!-- Stat Cards -->
+<div class="stats-grid">
+    <div class="stat-card blue">
+        <div class="stat-icon"><i class="fas fa-users"></i></div>
+        <div class="stat-info">
+            <h3>{{ stats.customers }}</h3>
+            <p>Total Customers</p>
+        </div>
+    </div>
+    <div class="stat-card green">
+        <div class="stat-icon"><i class="fas fa-credit-card"></i></div>
+        <div class="stat-info">
+            <h3>{{ stats.accounts }}</h3>
+            <p>Active Accounts</p>
+        </div>
+    </div>
+    <div class="stat-card yellow">
+        <div class="stat-icon"><i class="fas fa-coins"></i></div>
+        <div class="stat-info">
+            <h3>৳ {{ "{:,.0f}".format(stats.total_deposits) }}</h3>
+            <p>Total Deposits</p>
+        </div>
+    </div>
+    <div class="stat-card red">
+        <div class="stat-icon"><i class="fas fa-hand-holding-usd"></i></div>
+        <div class="stat-info">
+            <h3>{{ stats.loans }}</h3>
+            <p>Active Loans</p>
+        </div>
+    </div>
+    <div class="stat-card purple">
+        <div class="stat-icon"><i class="fas fa-money-bill-wave"></i></div>
+        <div class="stat-info">
+            <h3>৳ {{ "{:,.0f}".format(stats.loan_amount) }}</h3>
+            <p>Total Loan Amount</p>
+        </div>
+    </div>
+    <div class="stat-card teal">
+        <div class="stat-icon"><i class="fas fa-user-tie"></i></div>
+        <div class="stat-info">
+            <h3>{{ stats.employees }}</h3>
+            <p>Employees</p>
+        </div>
+    </div>
+</div>
+
+<!-- ER Diagram Overview -->
+<div class="card mt-4">
+    <div class="card-header">
+        <h2><i class="fas fa-project-diagram"></i> System Entity Relationships</h2>
+    </div>
+    <div class="card-body">
+        <div class="er-overview">
+            <div class="er-entity main">
+                <i class="fas fa-university"></i>
+                <span>Bank</span>
+                <small>{{ stats.branches }} branch(es)</small>
+            </div>
+            <div class="er-arrow">→ has →</div>
+            <div class="er-entity">
+                <i class="fas fa-building"></i>
+                <span>Branch</span>
+            </div>
+            <div class="er-arrow">→ employs →</div>
+            <div class="er-entity">
+                <i class="fas fa-user-tie"></i>
+                <span>Employee</span>
+                <small>{{ stats.employees }} staff</small>
+            </div>
+        </div>
+        <div class="er-overview mt-3">
+            <div class="er-entity main">
+                <i class="fas fa-university"></i>
+                <span>Bank</span>
+            </div>
+            <div class="er-arrow">→ has →</div>
+            <div class="er-entity">
+                <i class="fas fa-users"></i>
+                <span>Customer</span>
+                <small>{{ stats.customers }} total</small>
+            </div>
+            <div class="er-arrow">→ owns →</div>
+            <div class="er-entity">
+                <i class="fas fa-credit-card"></i>
+                <span>Account</span>
+                <small>Saving / Current</small>
+            </div>
+        </div>
+        <div class="er-overview mt-3">
+            <div class="er-entity">
+                <i class="fas fa-users"></i>
+                <span>Customer</span>
+            </div>
+            <div class="er-arrow">→ avails →</div>
+            <div class="er-entity">
+                <i class="fas fa-hand-holding-usd"></i>
+                <span>Loan</span>
+                <small>{{ stats.loans }} active</small>
+            </div>
+            <div class="er-arrow">→ has →</div>
+            <div class="er-entity">
+                <i class="fas fa-receipt"></i>
+                <span>Payment</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="card mt-4">
+    <div class="card-header">
+        <h2><i class="fas fa-bolt"></i> Quick Actions</h2>
+    </div>
+    <div class="card-body">
+        <div class="quick-actions">
+            <a href="{{ url_for('add_customer') }}" class="action-btn blue">
+                <i class="fas fa-user-plus"></i> Add Customer
+            </a>
+            <a href="{{ url_for('add_account') }}" class="action-btn green">
+                <i class="fas fa-plus-circle"></i> Open Account
+            </a>
+            <a href="{{ url_for('add_loan') }}" class="action-btn yellow">
+                <i class="fas fa-file-invoice-dollar"></i> New Loan
+            </a>
+            <a href="{{ url_for('add_employee') }}" class="action-btn purple">
+                <i class="fas fa-user-tie"></i> Add Employee
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
